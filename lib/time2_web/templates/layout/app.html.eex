@@ -9,10 +9,6 @@
   </head>
   <body>
     <div class="container">
-      <nav class="jumbotron text-center">
-        <h1>Timesheet</h1>
-      </nav>
-
       <div class="row">
         <div class="col-12">
           <%= if get_flash(@conn, :info) do %>
