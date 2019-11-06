@@ -18,6 +18,12 @@ defmodule Time2Web.Router do
 
     get "/", PageController, :index
     get "/users", PageController, :index
+
+    resources "/managers", ManagerController, except: [:new, :edit]
+    resources "/workers", WorkerController, except: [:new, :edit]
+    resources "/jobs", JobController, except: [:new, :edit]
+    resources "/sheets", SheetController, except: [:new, :edit]
+    resources "/tasks", TaskController, except: [:new, :edit]
   end
 
   # Other scopes may use custom stacks.
