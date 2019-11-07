@@ -6,11 +6,10 @@ defmodule Time2Web.SessionController do
     alias Time2.Workers
     alias Time2.Managers
   
-    def create(conn, %{"email" => email, "type" => type}) when type == "worker" do
+    def create(conn, %{"worker_email" => worker_email}) do
       # TODO: remove this print
       IO.puts "session controller create"
-      IO.inspect type
-      worker = Workers.authenticate_worker(email)
+      worker = Workers.authenticate_worker(worker_email)
       if worker do
         token = Phoenix.Token.sign(conn, "session", worker.id)
         resp = %{token: token, worker_id: worker.id, worker_name: worker.name}
@@ -25,14 +24,13 @@ defmodule Time2Web.SessionController do
       end
     end
 
-    def create(conn, %{"email" => email, "type" => type}) when type == "manager" do
+    def create(conn, %{"manager_email" => manager_email}) do
       # TODO: remove this print
       IO.puts "session controller create"
-      IO.inspect type
-      manager = Managers.authenticate_manager(email)
+      manager = Managers.authenticate_manager(manager_email)
       if manager do
         token = Phoenix.Token.sign(conn, "session", manager.id)
-        resp = %{token: token, manager_id: manager.id, manager: manager.name}
+        resp = %{token: token, manager_id: manager.id, manager_name: manager.name}
         conn
         |> put_resp_header("content-type", "application/json; charset=UTF-8")
         |> send_resp(:created, Jason.encode!(resp))

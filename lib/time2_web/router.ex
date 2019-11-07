@@ -26,6 +26,8 @@ defmodule Time2Web.Router do
     resources "/tasks", TaskController, except: [:new, :edit]
 
     resources "/sessions", SessionController, only: [:create], singleton: true
+
+    # get "workers/create_sheet", SheetController, :create_sheet
   end
 
   scope "/", Time2Web do
@@ -33,6 +35,7 @@ defmodule Time2Web.Router do
 
     get "/", PageController, :index
     get "/*path", PageController, :index
+    # get "workers/create_sheet", PageController, :create_sheet
 
     # resources "/managers", ManagerController, except: [:new, :edit]
     # resources "/workers", WorkerController, except: [:new, :edit]

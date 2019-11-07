@@ -49,7 +49,7 @@ class ManagerLogin extends React.Component {
         <Form.Group controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control type="text" onChange={
-            (ev) => this.changed({email: ev.target.value})} />
+            (ev) => this.changed({manager_email: ev.target.value})} />
         </Form.Group>
         {/* TODO: password */}
         <Form.Group controlId="submit">
@@ -63,8 +63,9 @@ class ManagerLogin extends React.Component {
 }
 
 function state2props(state) {
-  console.log(state)
-  return state.forms.manager_login;
+  
+  console.log(state);
+  return state.manager_login;
 }
 
 export default connect(state2props)(ManagerLogin);

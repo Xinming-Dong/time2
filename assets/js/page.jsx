@@ -21,37 +21,129 @@ export default function init_page(root) {
 }
 
 function Page(props) {
-  return (
-    <Router>
-      <Navbar bg="dark" variant="dark">
-        <Col md="4">
-          <Nav>
-            <Nav.Item>
-              <NavLink to="/" exact activeClassName="active" className="nav-link">
-                Home
-              </NavLink>
-            </Nav.Item>
-          </Nav>
-        </Col>
-        <Col md="8">
-          <Session />
-        </Col>
-      </Navbar>
-
+  let session= JSON.parse(localStorage.getItem("session"));
+  console.log("page------------------");
+  console.log(session);
+  if (session == null) {
+    return(
+      <div>
+      <Router>
+        <Navbar bg="dark" variant="dark">
+          <Col md="4">
+            <Nav>
+              <Nav.Item>
+                <NavLink to="/" exact activeClassName="active" className="nav-link">
+                  Home
+                </NavLink>
+              </Nav.Item>
+            </Nav>
+          </Col>
+          <Col md="8">
+            <Session />
+          </Col>
+        </Navbar>
+  
+        <Switch>
+          <Route exact path="/worker_login">
+            <WorkerLogin />
+          </Route>
+          <Route exact path="/manager_login">
+            <ManagerLogin />
+          </Route>
+          <Route exact path="/workers/create_sheet">
+            <CreateSheet />
+          </Route>
+        </Switch>
+        </Router>
+      
+      </div>
+    );
+  }
+  else if (session.worker_id) {
+    return (
+      <div>
+      <Router>
+        <Navbar bg="dark" variant="dark">
+          <Col md="4">
+            <Nav>
+              <Nav.Item>
+                <NavLink to="/" exact activeClassName="active" className="nav-link">
+                  Home
+                </NavLink>
+              </Nav.Item>
+            </Nav>
+          </Col>
+          <Col md="8">
+            <Session />
+          </Col>
+        </Navbar>
+  
+        <Switch>
+          <Route exact path="/worker_login">
+            <WorkerLogin />
+          </Route>
+          <Route exact path="/manager_login">
+            <ManagerLogin />
+          </Route>
+          <Route exact path="/workers/create_sheet">
+            <CreateSheet />
+          </Route>
+        </Switch>
+      
+      </Router>
+      <Router>
+      <Nav.Item>
+        <NavLink to="/workers/create_sheet" exact activeClassName="active" className="nav-link">
+          Create a Timesheet
+        </NavLink>
+      </Nav.Item>
       <Switch>
-        <Route exact path="/worker_login">
-          <WorkerLogin />
-        </Route>
-        <Route exact path="/manager_login">
-          <ManagerLogin />
-        </Route>
-        <Route exact path="/workers/create_sheet">
-          <CreateSheet />
-        </Route>
+          <Route exact path="/workers/create_sheet">
+            <CreateSheet />
+          </Route>
       </Switch>
-
-    </Router>
-  );
+      </Router>
+      
+      </div>
+    );
+  }
+  else {
+    return(
+      <div>
+      <Router>
+        <Navbar bg="dark" variant="dark">
+          <Col md="4">
+            <Nav>
+              <Nav.Item>
+                <NavLink to="/" exact activeClassName="active" className="nav-link">
+                  Home
+                </NavLink>
+              </Nav.Item>
+            </Nav>
+          </Col>
+          <Col md="8">
+            <Session />
+          </Col>
+        </Navbar>
+  
+        <Switch>
+          <Route exact path="/worker_login">
+            <WorkerLogin />
+          </Route>
+          <Route exact path="/manager_login">
+            <ManagerLogin />
+          </Route>
+          <Route exact path="/workers/create_sheet">
+            <CreateSheet />
+          </Route>
+        </Switch>
+        </Router>
+      
+      </div>
+    );
+    
+  }
+  
 }
 
 let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
@@ -62,8 +154,6 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
       type: 'LOG_OUT',
     });
   }
-  console.log("page");
-  console.log(session);
   if (session == null) {
     return (
       <Col md="4">
@@ -109,12 +199,9 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
         <Nav.Item>
           <a className="nav-link" href="#" onClick={logout}>Logout</a>
         </Nav.Item>
-        <Nav.Item>
-          <NavLink to="/workers/create_sheet" exact activeClassName="active" className="nav-link">
-              Create a Timesheet
-          </NavLink>
-        </Nav.Item>
+        
       </Nav>
+      
       </Router>
     );
   }

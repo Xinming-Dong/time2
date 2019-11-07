@@ -5,8 +5,10 @@ export function post(path, body) {
   console.log(path)
   console.log(body)
   let state = store.getState();
-//   TODO: session is null
-//   let token = state.session.token;
+  let token = "";
+  if (state.session) {
+    token = state.session.token;
+  }
 
   return fetch('/ajax' + path, {
     method: 'post',
@@ -15,8 +17,7 @@ export function post(path, body) {
       'x-csrf-token': window.csrf_token,
       'content-type': "application/json; charset=UTF-8",
       'accept': 'application/json',
-      //   TODO: session is null
-    //   'x-auth': token || "",
+      'x-auth': token || "",
     }),
     body: JSON.stringify(body),
   }).then((resp) => resp.json());
@@ -38,18 +39,22 @@ export function get(path) {
   }).then((resp) => resp.json());
 }
 
+export function create_sheet(form) {
+  let state = store.getState();
+  let data = state.new_sheet;
+
+  post('/sheets', data)
+    .then((resp) => {
+      console.log(resp);
+    })
+}
+
 export function submit_login(form, type) {
   let state = store.getState();
-  console.log("heeeeeeeer");
-  console.log(state);
-  let data;
+  let data = state.worker_login;
   if (type == "manager") {
-    data = state.forms.manager_login;
+    data = state.manager_login;
   }
-  else {
-    data = state.forms.worker_login;
-  }
-
 
   post('/sessions', data)
     .then((resp) => {
@@ -61,6 +66,7 @@ export function submit_login(form, type) {
           type: 'LOG_IN',
           data: resp,
         });
+        // TODO: change redirect
         form.redirect('/');
       }
       else {
