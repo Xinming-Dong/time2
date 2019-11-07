@@ -101,4 +101,13 @@ defmodule Time2.Workers do
   def change_worker(%Worker{} = worker) do
     Worker.changeset(worker, %{})
   end
+
+  def authenticate_worker(email) do
+    worker = Repo.get_by(Worker, email: email)
+    if worker do
+      worker
+    else
+      nil 
+    end
+  end
 end

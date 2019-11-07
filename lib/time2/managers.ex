@@ -101,4 +101,13 @@ defmodule Time2.Managers do
   def change_manager(%Manager{} = manager) do
     Manager.changeset(manager, %{})
   end
+
+  def authenticate_manager(email) do
+    manager = Repo.get_by(Manager, email: email)
+    if manager do
+      manager
+    else
+      nil 
+    end
+  end
 end
