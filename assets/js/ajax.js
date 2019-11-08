@@ -1,9 +1,6 @@
 import store from './store';
 
 export function post(path, body) {
-  console.log("pooooooost");
-  console.log(path)
-  console.log(body)
   let state = store.getState();
   let token = "";
   if (state.session) {
@@ -46,7 +43,34 @@ export function create_sheet(form) {
   post('/sheets', data)
     .then((resp) => {
       console.log(resp);
+      if(resp.data) {
+        // localStorage.setItem('session', JSON.stringify(resp));
+        store.dispatch({
+          type: 'CREATE_NEW_SHEET',
+          data: resp,
+        });
+        console.log("check redirect form");
+        console.log(form);
+        form.redirect('/workers/show_sheet');
+      }
     })
+}
+
+export function get_sheets() {
+  // get all sheets
+
+  get('/sheets/' + JSON.parse(localStorage.getItem("session")).worker_id)
+    .then((resp) => {
+      // TODO: remove this print
+      console.log("get sheets");
+      console.log(resp);
+      store.dispatch({
+        type: 'ADD_SHEETS',
+        data: resp,
+      });
+      
+    });
+    console.log("something")
 }
 
 export function submit_login(form, type) {

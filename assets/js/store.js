@@ -42,6 +42,20 @@ function new_sheet(st0 = {current_worker_id: 0, date: null, job_code: [], hour: 
   }
 }
 
+function sheets(st0 = {data: []}, action) {
+  switch(action.type) {
+      case 'ADD_SHEETS':
+          return Object.assign({}, st0, action.data);
+          // let st1 = new Map(st0);
+          // for (let sheet of action.data) {
+          //     st1.set(sheet.id, sheet);
+          // }
+          // return st1;
+      default:
+          return st0;
+  }
+}
+
 // function forms(st0, action) {
 //   let reducer = combineReducers({
 //     worker_login,
@@ -74,6 +88,7 @@ function root_reducer(st0, action) {
   let reducer = combineReducers({
     worker_login,
     manager_login,
+    sheets,
     session,
     new_sheet,
   });

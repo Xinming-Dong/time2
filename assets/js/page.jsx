@@ -10,6 +10,8 @@ import ManagerLogin from './manager_login';
 import store from './store';
 
 import CreateSheet from './workers/create_sheet';
+import ShowSheet from './workers/show_sheet';
+import ViewSheets from './workers/view_sheets';
 
 export default function init_page(root) {
   let tree = (
@@ -21,9 +23,6 @@ export default function init_page(root) {
 }
 
 function Page(props) {
-  // let session= JSON.parse(localStorage.getItem("session"));
-  // console.log("page------------------");
-  // console.log(session);
   return(
       <div>
       <Router>
@@ -40,8 +39,8 @@ function Page(props) {
           
         </Navbar>
         <Col md="8">
-            <Session />
-          </Col>
+          <Session />
+        </Col>
   
         <Switch>
           <Route exact path="/worker_login">
@@ -49,9 +48,6 @@ function Page(props) {
           </Route>
           <Route exact path="/manager_login">
             <ManagerLogin />
-          </Route>
-          <Route exact path="/workers/create_sheet">
-            <CreateSheet />
           </Route>
         </Switch>
         </Router>
@@ -118,10 +114,19 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
         <NavLink to="/workers/create_sheet" exact activeClassName="active" className="nav-link">
           Create a Timesheet
         </NavLink>
+        <NavLink to="/workers/view_sheets" exact activeClassName="active" className="nav-link">
+          View My Timesheets
+        </NavLink>
 
         <Switch>
           <Route exact path="/workers/create_sheet">
             <CreateSheet />
+          </Route>
+          <Route exact path="/workers/show_sheet">
+            <ShowSheet />
+          </Route>
+          <Route exact path="/workers/view_sheets">
+            <ViewSheets />
           </Route>
         </Switch>
       </Router>

@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { connect } from 'react-redux';
-import { Form, Button, Alert, Col,  Nav} from 'react-bootstrap';
+import { Form, Button, Alert, Col} from 'react-bootstrap';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { Redirect , NavLink} from 'react-router';
 
 import { create_sheet } from '../ajax';
@@ -30,7 +30,7 @@ class CreateSheet extends React.Component {
   }
 
   handel_change_hour(i, e) {
-    let state_hours = this.state.job_codes;
+    let state_hours = this.state.hours;
     state_hours[i] = e.target.value;
     this.setState({
       hours: state_hours,

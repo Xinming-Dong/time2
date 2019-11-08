@@ -101,4 +101,11 @@ defmodule Time2.Jobs do
   def change_job(%Job{} = job) do
     Job.changeset(job, %{})
   end
+
+  def get_jobid_by_code(code) do
+    # get id
+    query = from j in "jobs", where: j.job_code == ^code, select: j.id
+    IO.inspect(Repo.all(query))
+    Enum.at(Repo.all(query), 0)
+  end
 end

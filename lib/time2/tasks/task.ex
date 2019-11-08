@@ -9,7 +9,7 @@ defmodule Time2.Tasks.Task do
     # field :job_id, :id
 
     belongs_to :sheet, Time2.Sheets.Sheet
-    belongs_to :Job, Time2.Jobs.Job
+    belongs_to :job, Time2.Jobs.Job
 
     timestamps()
   end
