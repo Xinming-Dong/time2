@@ -101,4 +101,9 @@ defmodule Time2.Tasks do
   def change_task(%Task{} = task) do
     Task.changeset(task, %{})
   end
+
+  def get_tasks_by_sheet_id(id) do
+    # worker = Repo.get_by(Worker, email: email)
+    Repo.get_by(Task, sheet_id: id)
+  end
 end

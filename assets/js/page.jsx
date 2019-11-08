@@ -38,7 +38,7 @@ function Page(props) {
           </Col>
           
         </Navbar>
-        <Col md="8">
+        <Col>
           <Session />
         </Col>
   

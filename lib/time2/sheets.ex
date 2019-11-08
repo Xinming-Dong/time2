@@ -101,4 +101,11 @@ defmodule Time2.Sheets do
   def change_sheet(%Sheet{} = sheet) do
     Sheet.changeset(sheet, %{})
   end
+
+  def get_sheet_by_worker_id(id) do
+    {a, _} = Integer.parse(id)
+    query = from s in "sheets", where: s.worker_id == ^a, select: %{id: s.id, date: s.date, approve_status: s.approve_status}
+    Repo.all(query)
+    
+  end
 end

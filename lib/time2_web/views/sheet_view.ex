@@ -7,7 +7,7 @@ defmodule Time2Web.SheetView do
   end
 
   def render("show.json", %{sheet: sheet}) do
-    %{data: render_one(sheet, SheetView, "sheet.json")}
+    %{data: render_many(sheet, SheetView, "sheet.json")}
   end
 
   def render("sheet.json", %{sheet: sheet}) do

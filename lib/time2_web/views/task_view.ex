@@ -7,7 +7,7 @@ defmodule Time2Web.TaskView do
   end
 
   def render("show.json", %{task: task}) do
-    %{data: render_one(task, TaskView, "task.json")}
+    %{data: render_many(task, TaskView, "task.json")}
   end
 
   def render("task.json", %{task: task}) do

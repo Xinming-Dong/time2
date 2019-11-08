@@ -46,13 +46,17 @@ function sheets(st0 = {data: []}, action) {
   switch(action.type) {
       case 'ADD_SHEETS':
           return Object.assign({}, st0, action.data);
-          // let st1 = new Map(st0);
-          // for (let sheet of action.data) {
-          //     st1.set(sheet.id, sheet);
-          // }
-          // return st1;
       default:
           return st0;
+  }
+}
+
+function tasks(st0 = {data: []}, action) {
+  switch(action.type) {
+    case 'SHOW_TASKS':
+      return Object.assign({}, st0, action.data);
+    default:
+      return st0;
   }
 }
 
@@ -89,6 +93,7 @@ function root_reducer(st0, action) {
     worker_login,
     manager_login,
     sheets,
+    tasks,
     session,
     new_sheet,
   });

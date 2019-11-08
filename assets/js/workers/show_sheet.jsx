@@ -1,4 +1,5 @@
 import React from 'react';
+import store from '../store';
 
 import { connect } from 'react-redux';
 import { Form, Button, Alert, Col} from 'react-bootstrap';
@@ -24,6 +25,11 @@ class ShowSheet extends React.Component {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />
     }
+
+    let sheetslist = store.getState().sheets.data;
+    // TODO: remove this print
+    console.log("check if show sheet can get sheets");
+    console.log(sheetslist);
     
     return(
       <div>

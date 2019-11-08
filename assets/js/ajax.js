@@ -42,24 +42,36 @@ export function create_sheet(form) {
 
   post('/sheets', data)
     .then((resp) => {
-      console.log(resp);
       if(resp.data) {
         // localStorage.setItem('session', JSON.stringify(resp));
         store.dispatch({
           type: 'CREATE_NEW_SHEET',
           data: resp,
         });
-        console.log("check redirect form");
-        console.log(form);
-        form.redirect('/workers/show_sheet');
+        form.redirect('/');
       }
     })
 }
 
+export function show_tasks(sheet_id) {
+  // get tasks by sheet id
+  get('/tasks/' + sheet_id)
+  .then((resp) => {
+    // TODO: remove this print
+    console.log("show tasks: we got that");
+    console.log(resp);
+    store.dispatch({
+      type: 'SHOW_TASKS',
+      data: resp,
+    });
+  });
+
+}
+
 export function get_sheets() {
   // get all sheets
-
-  get('/sheets/' + JSON.parse(localStorage.getItem("session")).worker_id)
+  let worker_id = JSON.parse(localStorage.getItem("session")).worker_id;
+  get('/sheets/' + worker_id)
     .then((resp) => {
       // TODO: remove this print
       console.log("get sheets");
@@ -70,7 +82,6 @@ export function get_sheets() {
       });
       
     });
-    console.log("something")
 }
 
 export function submit_login(form, type) {

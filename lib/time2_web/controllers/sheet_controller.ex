@@ -21,14 +21,12 @@ defmodule Time2Web.SheetController do
       end
     )end)
     hour_sum = Enum.reduce(hour, fn h, acc -> h + acc end)
+    # TODO: "no more than 8 hours"
     if hour_sum === 8 do
       
       case Sheets.create_sheet(%{worker_id: current_worker_id, date: date, approve_status: false}) do
         {:ok, sheet} ->
           entry = Enum.zip([job_code, hour, note])
-          # TODO: remove this print
-          IO.puts("create tasks")
-          IO.inspect(entry)
 
           Enum.map(entry, fn {c, h, n} -> {
             if h != 0 do
@@ -49,7 +47,7 @@ defmodule Time2Web.SheetController do
   end
 
   def show(conn, %{"id" => id}) do
-    sheet = Sheets.get_sheet!(id)
+    sheet = Sheets.get_sheet_by_worker_id(id)
     render(conn, "show.json", sheet: sheet)
   end
 

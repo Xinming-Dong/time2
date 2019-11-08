@@ -21,8 +21,10 @@ defmodule Time2Web.TaskController do
   end
 
   def show(conn, %{"id" => id}) do
-    task = Tasks.get_task!(id)
-    render(conn, "show.json", task: task)
+    # task = Tasks.get_task!(id)
+    # get tasks by sheet id
+    tasks = Tasks.get_tasks_by_sheet_id(id)
+    render(conn, "show.json", tasks: tasks)
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do

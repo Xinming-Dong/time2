@@ -56,7 +56,6 @@ class CreateSheet extends React.Component {
       type: "CREATE_NEW_SHEET",
       data: data
     });
-    console.log(data)
   }
 
   redirect(path) {
@@ -233,7 +232,6 @@ class CreateSheet extends React.Component {
 
 function state2props(state) {
   // TODO: remove this print
-  console.log("state to prps create sheet");
   return state.new_sheet;
 }
 
