@@ -37,8 +37,6 @@ function new_sheet(st0 = {job_codes: [], current_worker_id: 0, date: null, job_c
   switch(action.type) {
     case 'CREATE_NEW_SHEET':
       let result1 = Object.assign({}, st0, action.data);
-      console.log("check new sheets");
-      console.log(result1);
       return result1;
     case 'JOB_CODES':
         let result2 = Object.assign({}, st0, action.data);

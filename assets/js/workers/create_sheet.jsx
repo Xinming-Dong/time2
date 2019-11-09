@@ -55,7 +55,7 @@ class CreateSheet extends React.Component {
   changed(data) {
     this.props.dispatch({
       type: "CREATE_NEW_SHEET",
-      data: data
+      data: data,
     });
   }
 
@@ -110,13 +110,14 @@ class CreateSheet extends React.Component {
     return(
       <div>
         <h1>New Time Sheet</h1>
-        <Button id="button1" variant="primary" onClick={() => this.plus()}>+</Button>
-        <Button id="button2" variant="primary" onClick={() => this.minus()}>-</Button>
+        
         <Form>
           <Form.Row>
             <Form.Label>date</Form.Label>
             <input type="date" className="form_control mr-sm-2" onChange={(en) => this.handle_date_change(en)}/>
           </Form.Row>
+          <Button id="button1" variant="primary" onClick={() => this.plus()}>+</Button>
+          <Button id="button2" variant="primary" onClick={() => this.minus()}>-</Button>
           <div>{this.table()}</div>
         </Form>
         <Button variant="primary" onClick={() => {
@@ -150,8 +151,8 @@ function SheetInfo(params) {
   });
 
   let select_code = 
-  <select id="mySelect" className="browser-default custom-select custom-select-lg mb-3" >
-    <option disabled selected>Jobcode</option>
+  <select id="mySelect" className="browser-default custom-select custom-select-lg mb-3" onChange={handel_change_job_code}>
+    <option disabled selected >Jobcode</option>
       {aaa}
   </select>;
 
