@@ -103,7 +103,8 @@ defmodule Time2.Tasks do
   end
 
   def get_tasks_by_sheet_id(id) do
-    # worker = Repo.get_by(Worker, email: email)
-    Repo.get_by(Task, sheet_id: id)
+    {a, _} = Integer.parse(id)
+    query = from t in "tasks", where: t.sheet_id == ^a, select: %{id: t.id, job_id: t.job_id, hour: t.hour, note: t.note}
+    Repo.all(query)
   end
 end

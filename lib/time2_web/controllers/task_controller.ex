@@ -21,10 +21,12 @@ defmodule Time2Web.TaskController do
   end
 
   def show(conn, %{"id" => id}) do
-    # task = Tasks.get_task!(id)
-    # get tasks by sheet id
-    tasks = Tasks.get_tasks_by_sheet_id(id)
-    render(conn, "show.json", tasks: tasks)
+
+    task = Tasks.get_tasks_by_sheet_id(id)
+    task = Enum.map(task, fn ts -> 
+      %{id: ts.id, hour: ts.hour, job_code: Time2.Jobs.get_code_by_id(ts.job_id), job_name: Time2.Jobs.get_name_by_id(ts.job_id), note: ts.note}
+     end)
+    render(conn, "show_tasks.json", task: task)
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do

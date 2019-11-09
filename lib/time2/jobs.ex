@@ -108,4 +108,15 @@ defmodule Time2.Jobs do
     IO.inspect(Repo.all(query))
     Enum.at(Repo.all(query), 0)
   end
+
+  def get_code_by_id(id) do
+    # get code
+    query = from j in "jobs", where: j.id == ^id, select: j.job_code
+    Enum.at(Repo.all(query), 0)
+  end
+
+  def get_name_by_id(id) do
+    query = from j in "jobs", where: j.id == ^id, select: j.name
+    Enum.at(Repo.all(query), 0)
+  end
 end

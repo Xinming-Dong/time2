@@ -21,8 +21,18 @@ defmodule Time2Web.WorkerController do
   end
 
   def show(conn, %{"id" => id}) do
-    worker = Workers.get_worker!(id)
-    render(conn, "show.json", worker: worker)
+    worker = Workers.get_workers_by_manager_id(id)
+    # TODO: remove this print
+    # IO.inspect worker
+    sheets = Enum.map(worker, fn w -> 
+      Time2.Sheets.manager_get_sheet_by_worker_id(w.id)
+    end)
+    sheets = Enum.reduce(sheets, [], fn(x, acc) -> Enum.concat(x, acc) end)
+    worker = Enum.map(sheets, fn s ->
+      %{id: s.id, date: s.date, worker_name: Time2.Workers.get_name_by_id(s.worker_id).name, approve_status: s.approve_status}
+    end)
+    IO.inspect sheets
+    render(conn, "manager_show_sheets.json", worker: worker)
   end
 
   def update(conn, %{"id" => id, "worker" => worker_params}) do

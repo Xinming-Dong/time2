@@ -39,6 +39,7 @@ export function get(path) {
 export function create_sheet(form) {
   let state = store.getState();
   let data = state.new_sheet;
+  console.log(data);
 
   post('/sheets', data)
     .then((resp) => {
@@ -68,10 +69,11 @@ export function show_tasks(sheet_id) {
 
 }
 
-export function get_sheets() {
+export function get_sheets(sheet_id) {
   // get all sheets
   let worker_id = JSON.parse(localStorage.getItem("session")).worker_id;
-  get('/sheets/' + worker_id)
+  if (sheet_id == 0) {
+    get('/sheets/' + worker_id)
     .then((resp) => {
       // TODO: remove this print
       console.log("get sheets");
@@ -80,8 +82,63 @@ export function get_sheets() {
         type: 'ADD_SHEETS',
         data: resp,
       });
-      
     });
+  }
+  else {
+    console.log("get tasks in a specific sheet");
+    get('/tasks/' + sheet_id)
+      .then((resp) => {
+    // TODO: remove this print
+    console.log("show tasks: we got that");
+    console.log(resp);
+    store.dispatch({
+      type: 'SHOW_TASKS',
+      tasks: resp,
+    });
+  });
+  }
+}
+
+export function manager_sheets(sheet_id, type) {
+  if (type == "") {
+    let manager_id = JSON.parse(localStorage.getItem("session")).manager_id;
+    if (sheet_id == 0) {
+      get('/workers/' + manager_id)
+      .then((resp) => {
+        // TODO: remove this print
+        console.log("manager sheets");
+        console.log(resp);
+        store.dispatch({
+          type: 'MANAGER_SHEETS',
+          data: resp,
+        });
+      });
+    }
+    else {
+      get('/tasks/' + sheet_id)
+      .then((resp) => {
+      // TODO: remove this print
+        console.log("show tasks: we got that");
+        console.log(resp);
+        store.dispatch({
+          type: 'SHOW_TASKS',
+          tasks: resp,
+        });
+      });
+    }
+  }
+  else {
+    let state = store.getState();
+    let data = state.manager_sheets;
+    post('/sheets/approve/' + sheet_id, data)
+    .then((resp) => {
+      console.log(resp);
+      store.dispatch({
+        type: 'APPROVE',
+        data: resp,
+      });
+    });
+  }
 }
 
 export function submit_login(form, type) {

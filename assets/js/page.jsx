@@ -10,8 +10,9 @@ import ManagerLogin from './manager_login';
 import store from './store';
 
 import CreateSheet from './workers/create_sheet';
-import ShowSheet from './workers/show_sheet';
 import ViewSheets from './workers/view_sheets';
+
+import ViewWorkers from './managers/view_workers';
 
 export default function init_page(root) {
   let tree = (
@@ -85,6 +86,7 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
   }
   else if (session.manager_id){
     return (
+      <div>
       <Router>
       <Nav>
         <Nav.Item>
@@ -95,6 +97,18 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
         </Nav.Item>
       </Nav>
       </Router>
+      <Router>
+      <NavLink to="/managers/view_workers" exact activeClassName="active" className="nav-link">
+        Supervise My workers and Timesheets
+      </NavLink>
+
+      <Switch>
+        <Route exact path="/managers/view_workers">
+          <ViewWorkers />
+        </Route>
+      </Switch>
+    </Router>
+    </div>
     );
   }
   else {
@@ -121,9 +135,6 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
         <Switch>
           <Route exact path="/workers/create_sheet">
             <CreateSheet />
-          </Route>
-          <Route exact path="/workers/show_sheet">
-            <ShowSheet />
           </Route>
           <Route exact path="/workers/view_sheets">
             <ViewSheets />

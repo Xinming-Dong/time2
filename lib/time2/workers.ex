@@ -102,6 +102,16 @@ defmodule Time2.Workers do
     Worker.changeset(worker, %{})
   end
 
+  def get_workers_by_manager_id(id) do
+    {a, _} = Integer.parse(id)
+    query = from w in "workers", where: w.manager_id == ^a, select: %{id: w.id, name: w.name}
+    Repo.all(query)
+  end
+
+  def get_name_by_id(id) do
+    Repo.get_by(Worker, id: id)
+  end
+
   def authenticate_worker(email) do
     worker = Repo.get_by(Worker, email: email)
     if worker do

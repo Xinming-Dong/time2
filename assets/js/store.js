@@ -42,23 +42,40 @@ function new_sheet(st0 = {current_worker_id: 0, date: null, job_code: [], hour: 
   }
 }
 
-function sheets(st0 = {data: []}, action) {
+function sheets(st0 = {data: [], tasks: []}, action) {
   switch(action.type) {
-      case 'ADD_SHEETS':
-          return Object.assign({}, st0, action.data);
-      default:
-          return st0;
-  }
-}
-
-function tasks(st0 = {data: []}, action) {
-  switch(action.type) {
-    case 'SHOW_TASKS':
+    case 'ADD_SHEETS':
       return Object.assign({}, st0, action.data);
+    case 'SHOW_TASKS': 
+      let task = {tasks: action.tasks.data};
+      return Object.assign({}, st0, task);
     default:
       return st0;
   }
 }
+
+function manager_sheets(st0 = {sheets: [], tasks: []}, action) {
+  switch(action.type) {
+    case 'MANAGER_SHEETS':
+      let sheet = {sheets: action.data.data};
+      console.log(sheet);
+      return Object.assign({}, st0, sheet);
+    case 'SHOW_TASKS': 
+      let task = {tasks: action.tasks.data};
+      return Object.assign({}, st0, task);
+    default:
+        return st0;
+  }
+}
+
+// function tasks(st0 = {data: []}, action) {
+//   switch(action.type) {
+//     case 'SHOW_TASKS':
+//       return Object.assign({}, st0, action.data);
+//     default:
+//       return st0;
+//   }
+// }
 
 // function forms(st0, action) {
 //   let reducer = combineReducers({
@@ -66,10 +83,6 @@ function tasks(st0 = {data: []}, action) {
 //     manager_login,
 //   });
 //   return reducer(st0, action);
-// }
-
-// function workers(st0 = new Map(), action) {
-//   return st0;
 // }
 
 let session0 = localStorage.getItem('session');
@@ -93,7 +106,7 @@ function root_reducer(st0, action) {
     worker_login,
     manager_login,
     sheets,
-    tasks,
+    manager_sheets,
     session,
     new_sheet,
   });

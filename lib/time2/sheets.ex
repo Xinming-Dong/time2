@@ -106,6 +106,16 @@ defmodule Time2.Sheets do
     {a, _} = Integer.parse(id)
     query = from s in "sheets", where: s.worker_id == ^a, select: %{id: s.id, date: s.date, approve_status: s.approve_status}
     Repo.all(query)
-    
+  end
+
+  def manager_get_sheet_by_worker_id(id) do
+    # {a, _} = Integer.parse(id)
+    query = from s in "sheets", where: s.worker_id == ^id, select: %{id: s.id, date: s.date, worker_id: s.worker_id, approve_status: s.approve_status}
+    Repo.all(query)
+  end
+
+  def approve(id) do
+    from(s in Sheet, where: s.id == ^id)
+    |> Repo.update_all(set: [approve_status: true])
   end
 end
