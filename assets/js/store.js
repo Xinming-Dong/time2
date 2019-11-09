@@ -33,10 +33,18 @@ function manager_login(st0 = {manager_email: "", errors: null}, action) {
   }
 }
 
-function new_sheet(st0 = {current_worker_id: 0, date: null, job_code: [], hour: [], note: []}, action) {
+function new_sheet(st0 = {job_codes: [], current_worker_id: 0, date: null, job_code: [], hour: [], note: []}, action) {
   switch(action.type) {
     case 'CREATE_NEW_SHEET':
-      return Object.assign({}, st0, action.data);
+      let result1 = Object.assign({}, st0, action.data);
+      console.log("check new sheets");
+      console.log(result1);
+      return result1;
+    case 'JOB_CODES':
+        let result2 = Object.assign({}, st0, action.data);
+        console.log("check new sheets");
+        console.log(result2);
+      return result2;
     default:
       return st0;
   }
@@ -63,6 +71,10 @@ function manager_sheets(st0 = {sheets: [], tasks: []}, action) {
     case 'SHOW_TASKS': 
       let task = {tasks: action.tasks.data};
       return Object.assign({}, st0, task);
+    case 'APPROVE':
+      let approve = {sheets: action.data.data};
+      console.log(sheet);
+      return Object.assign({}, st0, approve);
     default:
         return st0;
   }

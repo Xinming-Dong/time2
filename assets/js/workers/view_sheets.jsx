@@ -24,7 +24,6 @@ class ViewSheets extends React.Component{
     let sheetslist = this.props.data;
     if (sheetslist.length == 0) {
       get_sheets(0);
-      console.log(this.props);
       return (
         <div>
           <h1>Show Sheet</h1>

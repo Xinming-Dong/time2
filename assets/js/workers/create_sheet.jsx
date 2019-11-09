@@ -5,7 +5,7 @@ import { Form, Button, Alert, Col} from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { Redirect , NavLink} from 'react-router';
 
-import { create_sheet } from '../ajax';
+import { create_sheet, job_codes } from '../ajax';
 
 class CreateSheet extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class CreateSheet extends React.Component {
       job_codes: ["", "", "", "", "", "", "", ""],
       hours: [0, 0, 0, 0, 0, 0, 0, 0],
       notes: ["", "", "", "", "", "", "", ""],
+      numOfRow: 1,
     };
   }
 
@@ -62,156 +63,62 @@ class CreateSheet extends React.Component {
     this.setState({redirect: path});
   }
 
+  plus() {
+    if (this.state.numOfRow < 8) {
+      this.setState({ numOfRow: this.state.numOfRow + 1 });
+    }
+  }
+  minus() {
+    if (this.state.numOfRow > 1) {
+      this.setState({ numOfRow: this.state.numOfRow - 1 });
+    }
+  }
+
+  table() {
+    let t = [];
+    for (let i = 0; i < this.state.numOfRow; i++) {
+      t.push(
+        <div>
+          <SheetInfo
+            allJobCode={this.props.job_codes}
+            handel_change_job_code={e => this.handel_change_job_code(i, e)}
+            handel_change_hour={e => this.handel_change_hour(i, e)}
+            handel_change_note={e => this.handel_change_note(i, e)}
+          />
+        </div>
+      );
+    }
+    return t;
+  }
+
   render() {
-    // TODO: remove this print
-    console.log("enter create sheet render");
-    console.log(this.props);
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />
+    }
+
+    let codes = this.props.job_codes;
+    if(codes.length == 0) {
+      job_codes();
+      return (
+        <div>
+          <h1>Show Sheet</h1>
+          <p>Loading...</p>
+        </div>
+      );
     }
     
     return(
       <div>
-      <Form>
-        <Form.Row>
-          <Form.Label>date</Form.Label>
-          <input type="date" className="form_control mr-sm-2" onChange={(en) => this.handle_date_change(en)}/>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group as={Col} controlId="formGridJob">
-            <Form.Label>Job</Form.Label>
-            <Form.Control type="job_code" placeholder="Enter Job Code" onChange={(en) => this.handel_change_job_code(0, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridHour">
-            <Form.Label>Hour</Form.Label>
-            <Form.Control type="hour" placeholder="Hour" onChange={(en) => this.handel_change_hour(0, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridNote">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control type="description" placeholder="Notes" onChange={(en) =>this.handel_change_note(0, en)}/>
-          </Form.Group>
-        </Form.Row>
-
-        <Form.Row>
-          <Form.Group as={Col} controlId="formGridJob">
-            <Form.Label>Job</Form.Label>
-            <Form.Control type="job_code" placeholder="Enter Job Code" onChange={(en) => this.handel_change_job_code(1, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridHour">
-            <Form.Label>Hour</Form.Label>
-            <Form.Control type="hour" placeholder="Hour" onChange={(en) => this.handel_change_hour(1, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridNote">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control type="description" placeholder="Notes" onChange={(en) =>this.handel_change_note(1, en)}/>
-          </Form.Group>
-        </Form.Row>
-
-        <Form.Row>
-          <Form.Group as={Col} controlId="formGridJob">
-            <Form.Label>Job</Form.Label>
-            <Form.Control type="job_code" placeholder="Enter Job Code" onChange={(en) => this.handel_change_job_code(2, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridHour">
-            <Form.Label>Hour</Form.Label>
-            <Form.Control type="hour" placeholder="Hour" onChange={(en) => this.handel_change_hour(2, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridNote">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control type="description" placeholder="Notes" onChange={(en) =>this.handel_change_note(2, en)}/>
-          </Form.Group>
-        </Form.Row>
-
-        <Form.Row>
-          <Form.Group as={Col} controlId="formGridJob">
-            <Form.Label>Job</Form.Label>
-            <Form.Control type="job_code" placeholder="Enter Job Code" onChange={(en) => this.handel_change_job_code(3, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridHour">
-            <Form.Label>Hour</Form.Label>
-            <Form.Control type="hour" placeholder="Hour" onChange={(en) => this.handel_change_hour(3, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridNote">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control type="description" placeholder="Notes" onChange={(en) =>this.handel_change_note(3, en)}/>
-          </Form.Group>
-        </Form.Row>
-
-        <Form.Row>
-          <Form.Group as={Col} controlId="formGridJob">
-            <Form.Label>Job</Form.Label>
-            <Form.Control type="job_code" placeholder="Enter Job Code" onChange={(en) => this.handel_change_job_code(4, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridHour">
-            <Form.Label>Hour</Form.Label>
-            <Form.Control type="hour" placeholder="Hour" onChange={(en) => this.handel_change_hour(4, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridNote">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control type="description" placeholder="Notes" onChange={(en) =>this.handel_change_note(4, en)}/>
-          </Form.Group>
-        </Form.Row>
-
-        <Form.Row>
-          <Form.Group as={Col} controlId="formGridJob">
-            <Form.Label>Job</Form.Label>
-            <Form.Control type="job_code" placeholder="Enter Job Code" onChange={(en) => this.handel_change_job_code(5, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridHour">
-            <Form.Label>Hour</Form.Label>
-            <Form.Control type="hour" placeholder="Hour" onChange={(en) => this.handel_change_hour(5, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridNote">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control type="description" placeholder="Notes" onChange={(en) =>this.handel_change_note(5, en)}/>
-          </Form.Group>
-        </Form.Row>
-
-        <Form.Row>
-          <Form.Group as={Col} controlId="formGridJob">
-            <Form.Label>Job</Form.Label>
-            <Form.Control type="job_code" placeholder="Enter Job Code" onChange={(en) => this.handel_change_job_code(6, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridHour">
-            <Form.Label>Hour</Form.Label>
-            <Form.Control type="hour" placeholder="Hour" onChange={(en) => this.handel_change_hour(6, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridNote">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control type="description" placeholder="Notes" onChange={(en) =>this.handel_change_note(6, en)}/>
-          </Form.Group>
-        </Form.Row>
-
-        <Form.Row>
-          <Form.Group as={Col} controlId="formGridJob">
-            <Form.Label>Job</Form.Label>
-            <Form.Control type="job_code" placeholder="Enter Job Code" onChange={(en) => this.handel_change_job_code(7, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridHour">
-            <Form.Label>Hour</Form.Label>
-            <Form.Control type="hour" placeholder="Hour" onChange={(en) => this.handel_change_hour(7, en)}/>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridNote">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control type="description" placeholder="Notes" onChange={(en) =>this.handel_change_note(7, en)}/>
-          </Form.Group>
-        </Form.Row>
+        <h1>New Time Sheet</h1>
+        <Button id="button1" variant="primary" onClick={() => this.plus()}>+</Button>
+        <Button id="button2" variant="primary" onClick={() => this.minus()}>-</Button>
+        <Form>
+          <Form.Row>
+            <Form.Label>date</Form.Label>
+            <input type="date" className="form_control mr-sm-2" onChange={(en) => this.handle_date_change(en)}/>
+          </Form.Row>
+          <div>{this.table()}</div>
+        </Form>
         <Button variant="primary" onClick={() => {
               this.changed({
                 current_worker_id: JSON.parse(localStorage.getItem("session")).worker_id,
@@ -224,10 +131,48 @@ class CreateSheet extends React.Component {
             }}>
           Submit
         </Button>
-      </Form>
-      </div>
-    );
+        </div>);
+          
+      
   }
+}
+
+function SheetInfo(params) {
+  let {
+    allJobCode,
+    handel_change_job_code,
+    handel_change_hour,
+    handel_change_note
+  } = params;
+  let aaa = _.map(allJobCode, (code, ii) => {
+    console.log(String(code));
+    return <option key={ii} value={code}> {code} </option>
+  });
+
+  let select_code = 
+  <select id="mySelect" className="browser-default custom-select custom-select-lg mb-3" >
+    <option disabled selected>Jobcode</option>
+      {aaa}
+  </select>;
+
+  return (
+    <Form.Row>
+      <Form.Group as={Col} controlId="formGridJob">
+        <Form.Label>Job</Form.Label>
+        {select_code}
+      </Form.Group>
+
+      <Form.Group as={Col} controlId="formGridHour">
+        <Form.Label>Hour</Form.Label>
+        <Form.Control type="hour" placeholder="Hour" onChange={handel_change_hour}/>
+      </Form.Group>
+
+      <Form.Group as={Col} controlId="formGridNote">
+        <Form.Label>Notes</Form.Label>
+        <Form.Control type="description" placeholder="Notes" onChange={handel_change_note}/>
+      </Form.Group>
+    </Form.Row>
+  );
 }
 
 function state2props(state) {

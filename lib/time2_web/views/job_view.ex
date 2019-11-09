@@ -6,6 +6,10 @@ defmodule Time2Web.JobView do
     %{data: render_many(jobs, JobView, "job.json")}
   end
 
+  def render("codes.json", %{jobs: jobs}) do
+    %{job_codes: jobs}
+  end
+
   def render("show.json", %{job: job}) do
     %{data: render_one(job, JobView, "job.json")}
   end

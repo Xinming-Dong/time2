@@ -3,6 +3,8 @@ defmodule Time2Web.SheetController do
 
   alias Time2.Sheets
   alias Time2.Sheets.Sheet
+  alias Time2.Workers
+  alias Time2.Workers.Worker
 
   action_fallback Time2Web.FallbackController
 
@@ -11,11 +13,17 @@ defmodule Time2Web.SheetController do
     render(conn, "index.json", sheets: sheets)
   end
 
-  def approve(conn, id) do
+  def approve(conn, %{"manager_id" => manager_id, "id" => id}) do
     sheets = Sheets.approve(id)
-    IO.puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    IO.inspect sheets
-    render(conn, "approve.json", sheets: sheets)
+    worker = Workers.get_workers_by_manager_id(manager_id)
+    sheet = Enum.map(worker, fn w -> 
+      Sheets.manager_get_sheet_by_worker_id(w.id)
+    end)
+    sheet = Enum.reduce(sheet, [], fn(x, acc) -> Enum.concat(x, acc) end)
+    sheet = Enum.map(sheet, fn s ->
+      %{id: s.id, date: s.date, worker_name: Time2.Workers.get_name_by_id(s.worker_id).name, approve_status: s.approve_status}
+    end)
+    render(conn, "approve.json", sheet: sheet)
   end
 
   def create(conn, %{"current_worker_id" => current_worker_id, "date" => date, "job_code" => job_code, "hour" => hour, "note" => note}) do

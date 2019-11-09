@@ -25,7 +25,7 @@ defmodule Time2Web.Router do
     resources "/sheets", SheetController, except: [:new, :edit]
     resources "/tasks", TaskController, except: [:new, :edit]
 
-    post "/sheets/approve/:id", SheetController, :approve
+    get "/sheets/approve/:manager_id/:id", SheetController, :approve
 
     resources "/sessions", SessionController, only: [:create], singleton: true
 

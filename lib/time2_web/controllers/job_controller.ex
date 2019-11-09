@@ -7,8 +7,10 @@ defmodule Time2Web.JobController do
   action_fallback Time2Web.FallbackController
 
   def index(conn, _params) do
-    jobs = Jobs.list_jobs()
-    render(conn, "index.json", jobs: jobs)
+    jobs = Time2.Jobs.list_job_codes()
+    IO.puts(">>>>>>>>>>>")
+    IO.inspect jobs
+    render(conn, "codes.json", jobs: jobs)
   end
 
   def create(conn, %{"job" => job_params}) do
